@@ -1,0 +1,75 @@
+[0919/000520.216:ERROR:simple_version_upgrade.cc(152)] Failed to write a new fake index.
+[0919/000520.234:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000520.236:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000520.237:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000520.242:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000520.242:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000520.242:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000520.255:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000520.256:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000520.256:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000520.263:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000520.263:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000520.264:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000520.577:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000520.577:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000520.585:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000520.585:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000523.491:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000523.491:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000523.491:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000523.500:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000523.500:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000523.500:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000523.512:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000523.512:ERROR:cache_util_win.cc(20)] Unable to move the cache: Acesso negado. (0x5)
+[0919/000523.513:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000523.513:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000523.513:ERROR:disk_cache.cc(205)] Unable to create cache
+[0919/000523.513:ERROR:gpu_disk_cache.cc(673)] Gpu Cache Creation failed: -2
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'attribution-reporting'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'compute-pressure'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'interest-cohort'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-issuance'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'shared-storage'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'shared-storage-select-url'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-redemption'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'unload'.", source:  (0)
+[0919/000523.519:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0919/000523.520:INFO:CONSOLE(0)] "Document-Policy HTTP header: Unrecognized document policy feature name include-js-call-stacks-in-crash-reports.", source: https://web.whatsapp.com/ (0)
+[0919/000523.535:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0919/000523.535:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'attribution-reporting'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'compute-pressure'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'interest-cohort'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-issuance'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'shared-storage'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'shared-storage-select-url'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-redemption'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'unload'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0919/000523.536:INFO:CONSOLE(0)] "Document-Policy HTTP header: Unrecognized document policy feature name include-js-call-stacks-in-crash-reports.", source: https://web.whatsapp.com/ (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'attribution-reporting'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'compute-pressure'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'interest-cohort'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-issuance'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'shared-storage'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'shared-storage-select-url'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-redemption'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'unload'.", source:  (0)
+[0919/000523.561:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0919/000523.562:INFO:CONSOLE(0)] "Document-Policy HTTP header: Unrecognized document policy feature name include-js-call-stacks-in-crash-reports.", source: https://web.whatsapp.com/ (0)
+[0919/000525.150:INFO:CONSOLE(115)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yE/r/vzmgygGoKtJ.js (115)
+[0919/000528.195:ERROR:quota_database.cc(929)] Could not open the quota database, resetting.
+[0919/000528.242:ERROR:quota_database.cc(929)] Could not open the quota database, resetting.
+[0919/000533.141:ERROR:quota_database.cc(929)] Could not open the quota database, resetting.
+[0919/000533.171:ERROR:quota_database.cc(929)] Could not open the quota database, resetting.
+[0919/000536.050:ERROR:quota_database.cc(931)] Failed to reset the quota database.
+[0919/000536.050:ERROR:quota_database.cc(931)] Failed to reset the quota database.
+[0919/000536.098:ERROR:quota_database.cc(931)] Failed to reset the quota database.
+[0919/000536.098:ERROR:quota_database.cc(931)] Failed to reset the quota database.
+[0919/000538.142:INFO:CONSOLE(151)] "Uncaught (in promise) [object Object]", source: https://static.whatsapp.net/rsrc.php/v4/yW/r/viHqVFvzl0J.js (151)
+[0919/000538.197:INFO:CONSOLE(151)] "Uncaught (in promise) [object Object]", source: https://static.whatsapp.net/rsrc.php/v4/yW/r/viHqVFvzl0J.js (151)
+[0919/000806.654:INFO:CONSOLE(4)] "Uncaught (in promise) Error: window is not defined", source: https://web.whatsapp.com/ (4)
+[0919/000808.018:INFO:CONSOLE(115)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yE/r/vzmgygGoKtJ.js (115)

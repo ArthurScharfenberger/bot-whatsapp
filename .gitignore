@@ -1,0 +1,21 @@
+# Dependências
+/node_modules
+
+# Arquivos de autenticação do WhatsApp Web.js
+/.wwebjs_auth
+/.wwebjs_cache
+
+# Configurações sensíveis
+.env
+/config/google-credentials.json
+
+# Logs e arquivos temporários
+logs.txt
+*.log
+
+# Arquivos gerados automaticamente
+package-lock.json
+
+# Cache do sistema operacional
+.DS_Store
+Thumbs.db

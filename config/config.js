@@ -8,13 +8,20 @@ function ensureEnv(name, fallback = undefined) {
   return value;
 }
 
+
 module.exports = {
+  //server
   PORT: process.env.PORT || 3000,
+  SESSION_NAME: process.env.SESSION_NAME || 'bot-session',
+
+  //Sheets
   API_TOKEN: ensureEnv('API_TOKEN', 'changeme'),
+  GOOGLE_SHEET_ID: ensureEnv('GOOGLE_SHEET_ID'), // ✅ garante que não fica vazio
+  //FILE_PATH: process.env.FILE_PATH || './planilha_clientes.xlsx',
+
+  //Whats
   REQUIRE_AUTH: process.env.REQUIRE_AUTH !== 'false',
   DEFAULT_INTERVAL_DAYS: Number(process.env.DEFAULT_INTERVAL_DAYS) || 5,
-  FILE_PATH: process.env.FILE_PATH || './planilha_clientes.xlsx',
-  SESSION_NAME: process.env.SESSION_NAME || 'bot-session',
-  MESSAGE_INTERVAL: parseInt(process.env.MESSAGE_INTERVAL, 10) || 5000,
-  GOOGLE_SHEET_ID: ensureEnv('GOOGLE_SHEET_ID') // ✅ garante que não fica vazio
+  MESSAGE_INTERVAL: parseInt(process.env.MESSAGE_INTERVAL, 10) || 5000
+  
 };

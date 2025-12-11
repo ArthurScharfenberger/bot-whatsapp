@@ -1,34 +1,28 @@
 const { google } = require('googleapis');
-const path = require('path');
 const logger = require('../utils/logger');
-const { GOOGLE_SHEET_ID } = require('../config/config');
-console.log("DEBUG -> GOOGLE_SHEET_ID:", GOOGLE_SHEET_ID); // deve mostrar o ID
+const {GOOGLE_SHEET_ID} = require('../config/config')
 
-
-
-console.log("GOOGLE_SHEET_ID carregado:", GOOGLE_SHEET_ID); // ✅ Debug
-
-const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, '../config/google-credentials.json'),
-  scopes: ['https://www.googleapis.com/auth/spreadsheets']
-});
+const { getSheetSchema, auth, TABELA_CLIENTES, TABELA_LOGS } = require('../config/sheetsMeta');
 
 async function getClientes() {
   try {
     const client = await auth.getClient();
     const sheets = google.sheets({ version: 'v4', auth: client });
 
+    const schema = await getSheetSchema(TABELA_CLIENTES); 
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: 'Clientes!A:D' // Ajuste conforme a aba da sua planilha
+      range: schema.range
     });
 
     const rows = res.data.values || [];
     if (!rows.length) return [];
 
-    const headers = rows.shift();
+    // remove cabeçalho
+    rows.shift();
+
     return rows.map(r =>
-      Object.fromEntries(headers.map((h, i) => [h, r[i] || '']))
+      Object.fromEntries(schema.colunas.map((h, i) => [h, r[i] || '']))
     );
   } catch (err) {
     logger.error('Erro ao ler Google Sheets', { erro: err.message });
@@ -41,10 +35,12 @@ async function appendLog(cliente, telefone, data, mensagem, status) {
     const client = await auth.getClient();
     const sheets = google.sheets({ version: 'v4', auth: client });
 
+    const logsSchema = await getSheetSchema(TABELA_LOGS);
+
     await sheets.spreadsheets.values.append({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: 'Logs!A:E', // ✅ precisa existir uma aba "Logs"
-      valueInputOption: 'RAW',
+      range: logsSchema.range, // ex: Logs!A:E
+      valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[cliente, telefone, data, status, mensagem]]
       }
@@ -61,10 +57,11 @@ async function updateLastSent(telefone, data) {
     const client = await auth.getClient();
     const sheets = google.sheets({ version: 'v4', auth: client });
 
-    // 1) Ler a aba Clientes
+    const schema = await getSheetSchema(TABELA_CLIENTES);
+
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: 'Clientes!A:D'
+      range: schema.range
     });
 
     const rows = res.data.values || [];
@@ -73,7 +70,7 @@ async function updateLastSent(telefone, data) {
       return;
     }
 
-    const headers = rows[0];
+    const headers = schema.colunas;
     const idxTelefone = headers.indexOf('Telefone');
     const idxUltimaMensagem = headers.indexOf('UltimaMensagem');
 
@@ -82,14 +79,14 @@ async function updateLastSent(telefone, data) {
       return;
     }
 
-    // 2) Procurar a linha do cliente pelo telefone
     const telNormalizado = String(telefone).replace(/\D/g, '');
-    let targetRowNumber = null; // número da linha no Google Sheets (1-based)
+    let targetRowNumber = null;
 
-    for (let i = 1; i < rows.length; i++) { // começa em 1 por causa do cabeçalho
+    // começa da linha 2 (linha 1 é cabeçalho)
+    for (let i = 1; i < rows.length; i++) {
       const telLinha = (rows[i][idxTelefone] || '').toString().replace(/\D/g, '');
       if (telLinha === telNormalizado) {
-        targetRowNumber = i + 1; // +1 porque o índice do array começa em 0
+        targetRowNumber = i + 1; // +1 porque o índice é 0-based
         break;
       }
     }
@@ -99,15 +96,13 @@ async function updateLastSent(telefone, data) {
       return;
     }
 
-    // 3) Descobrir letra da coluna da UltimaMensagem (A=0, B=1, C=2...)
     const colLetter = String.fromCharCode('A'.charCodeAt(0) + idxUltimaMensagem);
     const range = `Clientes!${colLetter}${targetRowNumber}`;
 
-    // 4) Atualizar a célula
     await sheets.spreadsheets.values.update({
       spreadsheetId: GOOGLE_SHEET_ID,
       range,
-      valueInputOption: 'RAW',
+      valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[data]]
       }
@@ -118,6 +113,5 @@ async function updateLastSent(telefone, data) {
     logger.error('Erro ao atualizar UltimaMensagem no Google Sheets', { erro: e.message });
   }
 }
-
 
 module.exports = { getClientes, appendLog, updateLastSent };

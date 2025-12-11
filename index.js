@@ -4,6 +4,7 @@ const logger = require('./utils/logger');
 const { PORT } = require('./config/config');
 const { errorHandler } = require('./utils/errorHandler');
 const { initWhatsApp } = require('./services/whatsapp');
+const {getSheetSchema} = require('./config/sheetsMeta')
 
 const app = express();
 app.use(express.json());
@@ -12,7 +13,11 @@ app.use(express.json());
 app.use('/', require('./routes/status'));
 app.use('/send', require('./routes/send'));
 app.use('/check', require('./routes/check'));
-// app.use('/debug', require('./routes/debug')); // opcional: crie o arquivo se quiser
+
+//debug
+app.use('/debug/health',require('./routes/debugRoutes/SheetsHealth'))
+
+
 
 // erro global
 app.use(errorHandler);

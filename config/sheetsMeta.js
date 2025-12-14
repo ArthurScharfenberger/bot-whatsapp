@@ -46,11 +46,10 @@ async function getSheetSchema(tabName) {//pega da planilha o nome, numero e rang
   schemaCache[tabName] = schema;
   logger.info('Schema de planilha carregado', schema);
   return schema;
-}
+}//getSheetSchema end
 
 module.exports = {
                     getSheetSchema, 
-                    
                     auth, 
                     TABELA_CLIENTES, 
                     TABELA_LOGS

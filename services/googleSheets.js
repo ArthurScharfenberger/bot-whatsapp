@@ -1,32 +1,42 @@
 const { google } = require('googleapis');
 const logger = require('../utils/logger');
-const {GOOGLE_SHEET_ID} = require('../config/config')
+const { GOOGLE_SHEET_ID } = require('../config/config')
 
 const { getSheetSchema, auth, TABELA_CLIENTES, TABELA_LOGS } = require('../config/sheetsMeta');
 
-async function getClientes() {
-  try {
-    const client = await auth.getClient();
-    const sheets = google.sheets({ version: 'v4', auth: client });
+async function getClientes(filters = {}) {
+  //O filtro precisa conter o nome exato da coluna na planilha, se não não irá buscar nada
+  const hasAnyFilter = Object.values(filters).some(
+    v => v !== undefined && v !== null && v !== ''
+  );
 
-    const schema = await getSheetSchema(TABELA_CLIENTES); 
-    const res = await sheets.spreadsheets.values.get({
-      spreadsheetId: GOOGLE_SHEET_ID,
-      range: schema.range
-    });
+  if (!hasAnyFilter) {//Caso não tenha nenhum filtro irá fazer um "select *"
+    try {
+      const client = await auth.getClient();
+      const sheets = google.sheets({ version: 'v4', auth: client });
 
-    const rows = res.data.values || [];
-    if (!rows.length) return [];
+      const schema = await getSheetSchema(TABELA_CLIENTES);
+      const res = await sheets.spreadsheets.values.get({
+        spreadsheetId: GOOGLE_SHEET_ID,
+        range: schema.range
+      });
 
-    // remove cabeçalho
-    rows.shift();
+      const rows = res.data.values || [];
+      if (!rows.length) return [];
 
-    return rows.map(r =>
-      Object.fromEntries(schema.colunas.map((h, i) => [h, r[i] || '']))
-    );
-  } catch (err) {
-    logger.error('Erro ao ler Google Sheets', { erro: err.message });
-    return [];
+      // remove cabeçalho
+      rows.shift();
+
+      return rows.map(r =>
+        Object.fromEntries(schema.colunas.map((h, i) => [h, r[i] || '']))
+      );
+    } catch (err) {
+      logger.error('Erro ao ler Google Sheets', { erro: err.message });
+      return [];
+    }
+
+  }else{//Caso tenha filtros, irá buscar por eles
+    logger.info('filtros encontrados',{})
   }
 }
 
@@ -52,7 +62,7 @@ async function appendLog(cliente, telefone, data, mensagem, status) {
   }
 }
 
-async function updateLastSent(telefone, data) {
+async function updateLastSent(telefone, data) { //Ao enviar uma msg (scheduler.js) altera a data do ultimo envio para a atual
   try {
     const client = await auth.getClient();
     const sheets = google.sheets({ version: 'v4', auth: client });
@@ -112,6 +122,6 @@ async function updateLastSent(telefone, data) {
   } catch (e) {
     logger.error('Erro ao atualizar UltimaMensagem no Google Sheets', { erro: e.message });
   }
-}
+}//updateLastSent end
 
 module.exports = { getClientes, appendLog, updateLastSent };

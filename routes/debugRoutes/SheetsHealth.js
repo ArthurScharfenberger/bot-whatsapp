@@ -5,8 +5,15 @@ const logger = require('../../utils/logger');
 
 router.get('/', async (req, res) => {
   try {
+
+    if (!TABELA_CLIENTES || !TABELA_LOGS) {
+      logger.error("Variaveis TABELA_CLIENTES e/ou TABELA_LOGS não incializadas", { erro: err.message });
+      res.status(500).json({error:"Variaveis TABELA_CLIENTES e/ou TABELA_LOGS não incializadas"});
+    }
+
     const clientesSchema = await getSheetSchema(TABELA_CLIENTES);
     const logsSchema = await getSheetSchema(TABELA_LOGS);
+
 
     res.json({
       status: "ok",

@@ -3,7 +3,14 @@ const qrcode = require('qrcode-terminal');
 const logger = require('../utils/logger');
 const { SESSION_NAME } = require('../config/config');
 
-let client;
+let client = null;
+let initPromise = null;
+let lastQrCode = null;
+let isShuttingDown = false;
+
+// flags de estado para evitar logs/qr duplicados
+let hasAuthenticatedOnce = false;
+let hasReadyOnce = false;
 
 function getClient() {
   if (!client) throw new Error('WhatsApp client ainda não inicializado');
@@ -11,23 +18,70 @@ function getClient() {
 }
 
 async function initWhatsApp() {
-  client = new Client({
-    authStrategy: new LocalAuth({ clientId: SESSION_NAME }),
-    puppeteer: { headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] }
-  });
+  if (initPromise) return initPromise;
+  if (client) return { client, qrCode: lastQrCode };
 
-  client.on('qr', (qr) => {
-    logger.info('QRCode gerado (escaneie no app do WhatsApp).');
-    qrcode.generate(qr, { small: true });
-  });
+  initPromise = (async () => {
+    isShuttingDown = false;
+    lastQrCode = null;
+    hasAuthenticatedOnce = false;
+    hasReadyOnce = false;
 
-  client.on('authenticated', () => logger.info('✅ Autenticado no WhatsApp'));
-  client.on('auth_failure', (m) => logger.error('❌ Falha de autenticação', { msg: m }));
-  client.on('ready', () => logger.info('🟢 WhatsApp pronto'));
-  client.on('disconnected', (r) => logger.warn('⚠️ Desconectado', { reason: r }));
+    client = new Client({
+      authStrategy: new LocalAuth({ clientId: SESSION_NAME }),
+      puppeteer: {
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+      }
+    });
 
-  await client.initialize();
-  return client;
+    client.on('qr', (qr) => {
+      // ✅ Se já ficou pronto alguma vez, ignore QR “fantasma” do logout
+      if (isShuttingDown || hasReadyOnce) return;
+
+      lastQrCode = qr;
+      logger.info('QRCode gerado');
+      qrcode.generate(qr, { small: true });
+    });
+
+    client.on('authenticated', () => {
+      // ✅ Evita duplicar “authenticated”
+      if (isShuttingDown || hasAuthenticatedOnce) return;
+
+      hasAuthenticatedOnce = true;
+      logger.info('✅ Autenticado no WhatsApp');
+    });
+
+    client.on('ready', () => {
+      // ✅ Evita duplicar “ready”
+      if (isShuttingDown || hasReadyOnce) return;
+
+      hasReadyOnce = true;
+      logger.info('🟢 WhatsApp pronto');
+    });
+
+    client.on('disconnected', async (reason) => {
+      logger.warn('⚠️ Desconectado', { reason });
+
+      isShuttingDown = true;
+
+      try {
+        // remove listeners para não logar nada enquanto morre
+        client.removeAllListeners();
+        await client.destroy();
+      } catch (_) {}
+
+      client = null;
+      initPromise = null;
+
+      logger.info('🛑 Cliente finalizado. Aguardando nova inicialização manual.');
+    });
+
+    await client.initialize();
+    return { client, qrCode: lastQrCode };
+  })();
+
+  return initPromise;
 }
 
 module.exports = { initWhatsApp, getClient };

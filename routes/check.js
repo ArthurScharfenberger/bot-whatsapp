@@ -5,7 +5,7 @@ const logger = require('../utils/logger');
 
 async function handleCheck(req, res) {
   try {
-    const results = await runScheduledCheck({ dryRun: true }); //true
+    const results = await runScheduledCheck({ dryRun: false }); //true
     logger.info('Verificação de clientes executada');
     res.json({ status: 'ok', results });
   } catch (err) {

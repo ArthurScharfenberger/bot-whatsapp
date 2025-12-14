@@ -1,0 +1,18 @@
+get clientes *            OK - /debug/cli - /client
+get clientes id           
+get clientes numero
+get clientes nome
+post clientes
+put clientes id
+delete clientes id
+
+get agendamentos *
+get agendamentos id
+post agendamentos
+put agendamentos
+delete agendamentos
+
+get WhatsConn             OK - /whats
+
+put config
+

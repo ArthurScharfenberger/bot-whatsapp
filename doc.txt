@@ -1,7 +1,5 @@
 get clientes *            OK - /debug/cli - /client
-get clientes id           
-get clientes numero
-get clientes nome
+get clientes filtro       
 post clientes
 put clientes id
 delete clientes id

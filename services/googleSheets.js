@@ -35,8 +35,8 @@ async function getClientes(filters = {}) {
       return [];
     }
 
-  }else{//Caso tenha filtros, irá buscar por eles
-    logger.info('filtros encontrados',{})
+  } else {//Caso tenha filtros, irá buscar por eles
+    logger.info('filtros encontrados', {})
   }
 }
 
@@ -76,7 +76,7 @@ async function updateLastSent(telefone, data) { //Ao enviar uma msg (scheduler.j
 
     const rows = res.data.values || [];
     if (!rows.length) {
-      logger.warn('Clientes: planilha vazia ao tentar atualizar UltimaMensagem');
+      logger.warn(`${TABELA_CLIENTES}: planilha vazia ao tentar atualizar UltimaMensagem`);
       return;
     }
 
@@ -96,7 +96,7 @@ async function updateLastSent(telefone, data) { //Ao enviar uma msg (scheduler.j
     for (let i = 1; i < rows.length; i++) {
       const telLinha = (rows[i][idxTelefone] || '').toString().replace(/\D/g, '');
       if (telLinha === telNormalizado) {
-        targetRowNumber = i + 1; // +1 porque o índice é 0-based
+        targetRowNumber = i + 1;
         break;
       }
     }
@@ -124,4 +124,33 @@ async function updateLastSent(telefone, data) { //Ao enviar uma msg (scheduler.j
   }
 }//updateLastSent end
 
-module.exports = { getClientes, appendLog, updateLastSent };
+async function selectUsersFiltered(data) {
+  try {
+    const client = await auth.getClient();
+    const sheets = google.sheets({ version: 'v4', auth: client });
+
+    const schema = await getSheetSchema(TABELA_CLIENTES);
+
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: GOOGLE_SHEET_ID,
+      range: schema.range
+    });
+
+    const rows = res.data.values || [];
+    if (!rows.length) {
+      logger.warn(`${TABELA_CLIENTES}: planilha vazia ao tentar atualizar UltimaMensagem`);
+      return;
+    }
+    
+    const headers = Object.keys(data);
+    //const idxTelefone = headers.indexOf('Telefone');
+    //const idxUltimaMensagem = headers.indexOf('UltimaMensagem');
+
+    return chave;
+  } catch (err) {
+    logger.error('Erro ao realizar consulta filtrada', { err })
+  }
+
+}
+
+module.exports = { getClientes, appendLog, updateLastSent, selectUsersFiltered };

@@ -4,40 +4,31 @@ const { GOOGLE_SHEET_ID } = require('../config/config')
 
 const { getSheetSchema, auth, TABELA_CLIENTES, TABELA_LOGS } = require('../config/sheetsMeta');
 
-async function getClientes(filters = {}) {
-  //O filtro precisa conter o nome exato da coluna na planilha, se não não irá buscar nada
-  const hasAnyFilter = Object.values(filters).some(
-    v => v !== undefined && v !== null && v !== ''
-  );
+async function getClientes() {
+  try {
+    const client = await auth.getClient();
+    const sheets = google.sheets({ version: 'v4', auth: client });
 
-  if (!hasAnyFilter) {//Caso não tenha nenhum filtro irá fazer um "select *"
-    try {
-      const client = await auth.getClient();
-      const sheets = google.sheets({ version: 'v4', auth: client });
+    const schema = await getSheetSchema(TABELA_CLIENTES);
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: GOOGLE_SHEET_ID,
+      range: schema.range
+    });
 
-      const schema = await getSheetSchema(TABELA_CLIENTES);
-      const res = await sheets.spreadsheets.values.get({
-        spreadsheetId: GOOGLE_SHEET_ID,
-        range: schema.range
-      });
+    const rows = res.data.values || [];
+    if (!rows.length) return [];
 
-      const rows = res.data.values || [];
-      if (!rows.length) return [];
+    // remove cabeçalho
+    rows.shift();
 
-      // remove cabeçalho
-      rows.shift();
-
-      return rows.map(r =>
-        Object.fromEntries(schema.colunas.map((h, i) => [h, r[i] || '']))
-      );
-    } catch (err) {
-      logger.error('Erro ao ler Google Sheets', { erro: err.message });
-      return [];
-    }
-
-  } else {//Caso tenha filtros, irá buscar por eles
-    logger.info('filtros encontrados', {})
+    return rows.map(r =>
+      Object.fromEntries(schema.colunas.map((h, i) => [h, r[i] || '']))
+    );
+  } catch (err) {
+    logger.error('Erro ao ler Google Sheets', { erro: err.message });
+    return [];
   }
+
 }
 
 async function appendLog(cliente, telefone, data, mensagem, status) {
@@ -124,33 +115,5 @@ async function updateLastSent(telefone, data) { //Ao enviar uma msg (scheduler.j
   }
 }//updateLastSent end
 
-async function selectUsersFiltered(data) {
-  try {
-    const client = await auth.getClient();
-    const sheets = google.sheets({ version: 'v4', auth: client });
 
-    const schema = await getSheetSchema(TABELA_CLIENTES);
-
-    const res = await sheets.spreadsheets.values.get({
-      spreadsheetId: GOOGLE_SHEET_ID,
-      range: schema.range
-    });
-
-    const rows = res.data.values || [];
-    if (!rows.length) {
-      logger.warn(`${TABELA_CLIENTES}: planilha vazia ao tentar atualizar UltimaMensagem`);
-      return;
-    }
-    
-    const headers = Object.keys(data);
-    //const idxTelefone = headers.indexOf('Telefone');
-    //const idxUltimaMensagem = headers.indexOf('UltimaMensagem');
-
-    return chave;
-  } catch (err) {
-    logger.error('Erro ao realizar consulta filtrada', { err })
-  }
-
-}
-
-module.exports = { getClientes, appendLog, updateLastSent, selectUsersFiltered };
+module.exports = { getClientes, appendLog, updateLastSent };

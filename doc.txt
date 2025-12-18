@@ -1,5 +1,5 @@
 get clientes *            OK - /debug/cli - /client
-get clientes filtro       
+get clientes filtro       OK - /debug/cli - /client (com body)
 post clientes
 put clientes id
 delete clientes id

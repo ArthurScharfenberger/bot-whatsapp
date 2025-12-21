@@ -1,8 +1,41 @@
 get clientes *            OK - /debug/cli - /client
+
+*não pode ter body. Se tiver, vai tentar buscar filtrado
+-----------------------------------------------------------------------------------------------------------------
 get clientes filtro       OK - /debug/cli - /client (com body)
-post clientes
-put clientes id
-delete clientes id
+    {
+        "name": "",
+        "phone": "".
+        ...
+    }
+
+    *A chave precisa ser exatamente o nome da coluna no banco
+-----------------------------------------------------------------------------------------------------------------
+post clientes             OK - /debug/cli - /client
+    {
+        "name": "",
+        "phone": "",
+        ...
+    }
+
+    *"name" e "phone" são obrigatórios. "last_message" e "interval" são opcionais e podem ficar nulos
+-----------------------------------------------------------------------------------------------------------------
+put clientes id           OK - /debug/cli - /client
+    {
+        "id": 1,
+        "name": "",
+        ...
+    }
+
+    *id é obrigatório
+-----------------------------------------------------------------------------------------------------------------
+delete clientes id        OK - /debug/cli - /client
+    {
+        "id": 1
+    }
+
+    *Apenas id é necessário, mas não vai quebrar se colocar mais chaves
+-----------------------------------------------------------------------------------------------------------------
 
 get agendamentos *
 get agendamentos id

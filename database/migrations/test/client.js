@@ -8,7 +8,7 @@ exports.up = function (knex) {
         table.string('name').notNullable();
         table.string('phone').notNullable().unique();
         table.date('last_message');
-        table.integer('inteval');
+        table.integer('interval');
 
         table.timestamps(true, true);
     });

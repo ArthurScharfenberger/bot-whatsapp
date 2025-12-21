@@ -13,7 +13,7 @@ async function insetIntoClients(allCli) {
                     name: c.Cliente,
                     phone: c.Telefone,
                     last_message: c.UltimaMensagem,
-                    inteval: c.IntervaloDias
+                    interval: c.IntervaloDias
                 });
             } catch (err) {
                 if (String(err.message).toUpperCase().includes('UNIQUE')) {
